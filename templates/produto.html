@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+
+        {% if user.is_authenticated %}
+            <span>Bem-vindo, {{ user.username }}</span>
+
+            {% if user.is_superuser %}
+                <a href="{% url 'cadastro_produto' %}" class="btn-admin">
+                    Cadastrar Produto
+                </a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="btn-logout">
+                Sair
+            </a>
+
+        {% else %}
+            <a href="{% url 'login' %}" class="btn-login">
+                Login
+            </a>
+        {% endif %}
+
+    </div>
+
+    <h2>Produtos</h2>
+
+    <div class="produtos">
+
+        {% for p in produtos %}
+            <div class="card-produto">
+                <h3>{{ p.nome }}</h3>
+                <p>{{ p.descricao }}</p>
+
+                {% if user.is_authenticated %}
+                    <p class="preco">R$ {{ p.preco }}</p>
+                    <button>Comprar</button>
+                {% else %}
+                    <p class="login-msg">Faça login para ver o preço</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
